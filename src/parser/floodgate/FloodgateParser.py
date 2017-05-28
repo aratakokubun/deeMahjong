@@ -7,8 +7,8 @@ You can use this module as a common util to parse floodgate mahjong web site.
 
 # Imports
 from bs4 import BeautifulSoup as bs
-import FloodgateParserUtils as fputils
-import FloodgateParseExceptions as fpe
+from src.parser.floodgate import FloodgateParserUtils as fputils
+from src.parser.floodgate import FloodgateParseExceptions as fpe
 from typing import List
 
 
@@ -22,7 +22,7 @@ class FgGame:
         @param base_url: url of src html
         @throws FgInvalidSectionException: row data can not be parsed
         """
-        if not fputils.validate_content(row.span.contents[0]):
+        if not fputils.validate_content(row):
             raise fpe.FgInvalidSectionException()
 
         self._time = row.td.contents[0]
@@ -58,4 +58,12 @@ def parse_game_table(table: List[bs], base_url: str) -> List[FgGame]:
     @param base_url: url of src html
     @return list of Floodgate games.
     """
-    return [FgGame(row, base_url) for row in table]
+    fggames = []
+    for row in table:
+        try:
+            fggame = FgGame(row, base_url)
+            fggames.append(fggame)
+        except fpe.FgInvalidSectionException:
+            # Do not process invalid content row
+            pass
+    return fggames
