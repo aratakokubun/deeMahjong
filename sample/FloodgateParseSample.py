@@ -7,6 +7,7 @@ import urllib.request
 
 from src.parser.floodgate import FloodgateRecentParser as fgrparser
 from src.parser.floodgate import FloodgateFullParser as fgfparser
+from src.parser.floodgate import FloodgatePlayerParser as fgpparser
 from src.config import FloodgateConfig as fgconfig
 
 if __name__ == "__main__":
@@ -23,3 +24,8 @@ if __name__ == "__main__":
         "utf-8"), base_url=config.get_url_log_full())
     print("last element in full " + str(len(fggame_list)) + ": " +
           fggame_list[-1].get_time() + ": " + fggame_list[-1].get_url())
+
+    html_players = urllib.request.urlopen(config.get_url_player()).read()
+    player_list = fgpparser.parse(html_players.decode("utf-8"))
+    print("last element in player " + str(len(player_list)) + ": " +
+          player_list[-1].get_time() + ": " + player_list[-1].get_url())
