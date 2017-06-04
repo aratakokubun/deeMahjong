@@ -8,7 +8,7 @@ import configparser
 # Class definition
 
 
-class FloodgateConfig:
+class DatabaseConf:
     """Config class to read database configuration."""
 
     # Class constants

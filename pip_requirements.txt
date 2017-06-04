@@ -64,3 +64,4 @@ traitlets
 wcwidth
 webencodings
 widgetsnbextension
+sqlalchemy
